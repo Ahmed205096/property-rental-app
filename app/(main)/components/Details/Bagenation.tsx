@@ -21,10 +21,7 @@ export default function PropertyGallery({ images }: PropertyGalleryProps) {
   const slides = galleryImages.map((src) => ({ src }));
 
   return (
-    // 🎯 شيلنا الـ mx-[110px] والـ mx-[20px] العشوائية عشان الـ Container الكبير اللي بره هو اللي يحكمه بالملّي
     <div className="relative flex flex-col w-full mb-10 mt-[40px]">
-      
-      {/* العنوان متناسق مع استايل العناوين في الموقع */}
       <p className="mb-[20px] text-[20px] font-bold text-[#1E40AF] text-center">
         Property Gallery
       </p>
