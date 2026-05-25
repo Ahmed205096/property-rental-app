@@ -333,7 +333,7 @@ export default function Profile() {
               </p>
             </div>
           ) : viewMode === "list" ? (
-            // List View layout (Horizontal Cards matching design)
+            // List View layout 
             <div className="flex flex-col gap-[16px]">
               {listings.map((item) => (
                 <div
@@ -434,7 +434,7 @@ export default function Profile() {
               ))}
             </div>
           ) : (
-            // Grid View layout (matching properties card layout)
+            // Grid View layout
             <div className="grid grid-cols-1 md:grid-cols-2 gap-[16px]">
               {listings.map((item) => (
                 <div
