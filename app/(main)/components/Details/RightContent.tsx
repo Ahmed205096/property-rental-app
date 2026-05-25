@@ -15,6 +15,7 @@ import getLocations from "@/app/actions/getLocations";
 export default function RightContent({ property }: LeftContentProps) {
   const session = useSession();
   const [bookmark, setBookMark] = useState(false);
+  const [contactNotice, setContactNotice] = useState(false);
 
   useEffect(() => {
     const check = async () => {
@@ -43,6 +44,10 @@ export default function RightContent({ property }: LeftContentProps) {
     } catch (error) {
       console.log("ERROR", error);
     }
+  };
+
+  const handleSendMessage = () => {
+    setContactNotice(true);
   };
 
   const contactCard = (
@@ -105,11 +110,23 @@ export default function RightContent({ property }: LeftContentProps) {
 
       <button
         type="button"
+        onClick={handleSendMessage}
         className="flex w-full bg-[#1E40AF] hover:bg-blue-700 active:scale-[0.98] transition-all text-[14px] text-white font-bold rounded-lg justify-center items-center gap-2 h-11 mt-2 shadow-sm cursor-pointer"
       >
         <LuSendHorizontal size={16} />
         <span>Send Message</span>
       </button>
+
+      {contactNotice && (
+        <div
+          className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-center text-[13px] font-semibold leading-5 text-amber-800"
+          role="status"
+          aria-live="polite"
+        >
+          I bravely planned this feature, then heroically postponed it. Message
+          sending is coming soon-ish.
+        </div>
+      )}
     </div>
   );
 
