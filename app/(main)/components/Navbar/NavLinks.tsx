@@ -23,7 +23,7 @@ export default function NavLinks({ isMobile }: IProps) {
     },
 
     {
-      href: "/favorit",
+      href: "/profile",
       label: "Favorit",
       icon: MdFavoriteBorder,
       mobileOnly: true,
@@ -69,7 +69,7 @@ export default function NavLinks({ isMobile }: IProps) {
 
           return (
             <Link
-              key={link.href}
+              key={`${link.label}-${link.href}`}
               href={link.href}
               className={`flex flex-col justify-center items-center flex-1 h-full transition-colors duration-300 ${
                 isActive ? activeColor : "hover:text-[#1E40AF]"
