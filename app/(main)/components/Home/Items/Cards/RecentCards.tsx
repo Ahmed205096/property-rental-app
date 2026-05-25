@@ -30,8 +30,13 @@ export default function RecentCards({
   image,
   price,
 }: IProps) {
+  const href = id ? `/details/${id}` : "/properties";
+
   return (
-    <div className="flex flex-col w-full h-full bg-white rounded-[10px] overflow-hidden">
+    <Link
+      href={href}
+      className="flex flex-col w-full h-full bg-white rounded-[10px] overflow-hidden transition-shadow hover:shadow-md"
+    >
       <div className="relative w-full h-[200px] shrink-0">
         <Image
           src={`${image}`}
@@ -90,16 +95,13 @@ export default function RecentCards({
               <p className="line-clamp-1 ml-1">{location}</p>
             </span>
             <span>
-              <Link
-                href={id ? `/details/${id}` : "/properties"}
-                className="bg-[#3b82f6] cursor-pointer hover:bg-[#2563eb] transition-colors text-white px-[15px] py-[6px] rounded-[8px] font-medium shadow-sm"
-              >
+              <span className="bg-[#3b82f6] cursor-pointer hover:bg-[#2563eb] transition-colors text-white px-[15px] py-[6px] rounded-[8px] font-medium shadow-sm">
                 Details
-              </Link>
+              </span>
             </span>
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

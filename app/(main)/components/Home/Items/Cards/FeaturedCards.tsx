@@ -30,9 +30,14 @@ export default function FeaturedCards({
   image,
   price,
 }: IProps) {
+  const href = id ? `/details/${id}` : "/properties";
+
   return (
     <div className="mb-[10px] md:w-1/2 w-full z-10">
-      <div className="flex flex-col lg:flex-row border border-gray-300 rounded-[10px] overflow-hidden bg-white">
+      <Link
+        href={href}
+        className="flex flex-col lg:flex-row border border-gray-300 rounded-[10px] overflow-hidden bg-white transition-shadow hover:shadow-md"
+      >
         <div className="relative w-full lg:w-1/2 h-[200px] lg:h-auto min-h-[180px]">
           <Image
             src={`${image}`}
@@ -87,16 +92,13 @@ export default function FeaturedCards({
                 <CiLocationOn strokeWidth={2} className="text-[13px]" />
                 <p>{location}</p>
               </span>
-              <Link
-                href={id ? `/details/${id}` : "/properties"}
-                className="bg-[#3b82f6] cursor-pointer hover:bg-[#2563eb] transition-colors text-white px-[15px] py-[6px] rounded-[8px] font-medium"
-              >
+              <span className="bg-[#3b82f6] cursor-pointer hover:bg-[#2563eb] transition-colors text-white px-[15px] py-[6px] rounded-[8px] font-medium">
                 Details
-              </Link>
+              </span>
             </div>
           </div>
         </div>
-      </div>
+      </Link>
     </div>
   );
 }

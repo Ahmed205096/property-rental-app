@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import {
   IoPencil,
@@ -64,6 +65,7 @@ function getPropertyAddress(property: Property) {
 }
 
 export default function Profile() {
+  const router = useRouter();
   const [viewMode, setViewMode] = useState<"list" | "grid">("list");
   const [listings, setListings] = useState<Property[]>([]);
   const [isListingsLoading, setIsListingsLoading] = useState(true);
@@ -132,6 +134,10 @@ export default function Profile() {
     }
   };
 
+  const openPropertyDetails = (id: string) => {
+    router.push(`/details/${id}`);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -151,9 +157,9 @@ export default function Profile() {
 
 
   return (
-    <div className="mt-[60px] ml-[20px] pb-[80px] pt-[40px] px-[20px] md:px-[60px] lg:px-[100px] bg-[#f7f8fc] flex-grow">
+    <div className="mt-[60px] pb-[80px] pt-[40px] px-[16px] sm:px-[20px] md:px-[60px] lg:px-[100px] bg-[#f7f8fc] flex-grow overflow-x-hidden">
       {/* Page Title Header */}
-      <div className="mb-[24px]  md:ml-[100px]">
+      <div className="mb-[24px] max-w-[1200px] mx-auto">
         <h2 className="text-[#1E40AF] font-bold text-[32px] leading-tight mb-[4px]">
           Your Profile
         </h2>
@@ -273,7 +279,7 @@ export default function Profile() {
           {/* Heading Row with Filter View Switcher */}
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-3">
-              <h3 className="text-[#1E40AF] font-bold text-[22px] md:text-[24px]">
+              <h3 className="text-[#1E40AF] font-bold text-[20px] md:text-[24px]">
                 Your Bookmarks
               </h3>
               <span className="bg-[#1E40AF] text-white text-[12px] font-bold px-[10px] py-[2px] rounded-full shadow-sm">
@@ -332,7 +338,15 @@ export default function Profile() {
               {listings.map((item) => (
                 <div
                   key={item._id}
-                  className="w-full bg-white border border-gray-300 rounded-[12px] overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col sm:flex-row"
+                  onClick={() => openPropertyDetails(item._id)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      openPropertyDetails(item._id);
+                    }
+                  }}
+                  role="link"
+                  tabIndex={0}
+                  className="w-full bg-white border border-gray-300 rounded-[12px] overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col sm:flex-row cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1E40AF]"
                 >
                   {/* Left Column Image */}
                   <div className="relative w-full sm:w-[220px] h-[160px] sm:h-auto shrink-0 select-none">
@@ -405,7 +419,10 @@ export default function Profile() {
                       </Link> */}
                       <button
                         type="button"
-                        onClick={() => handleBookMark(item._id)}
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          handleBookMark(item._id);
+                        }}
                         className="bg-[#DC2626] hover:bg-[#B91C1C] text-white text-[12px] font-bold py-[7px] px-[14px] rounded-[6px] flex items-center justify-center gap-[4px] cursor-pointer transition-colors shadow-sm"
                       >
                         <IoTrashOutline size={14} />
@@ -422,7 +439,15 @@ export default function Profile() {
               {listings.map((item) => (
                 <div
                   key={item._id}
-                  className="bg-white border border-gray-300 rounded-[12px] overflow-hidden shadow-sm flex flex-col justify-between"
+                  onClick={() => openPropertyDetails(item._id)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      openPropertyDetails(item._id);
+                    }
+                  }}
+                  role="link"
+                  tabIndex={0}
+                  className="bg-white border border-gray-300 rounded-[12px] overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1E40AF]"
                 >
                   <div className="relative w-full h-[180px] shrink-0 select-none">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -479,6 +504,7 @@ export default function Profile() {
                     <div className="flex gap-3 mt-[14px]">
                       <Link
                         href="/add-property"
+                        onClick={(event) => event.stopPropagation()}
                         className="flex-1 bg-[#1E40AF] hover:bg-[#1a3899] text-white text-[12px] font-bold py-[7px] px-[12px] rounded-[6px] flex items-center justify-center gap-[4px] cursor-pointer transition-colors"
                       >
                         <IoPencil size={14} />
@@ -486,7 +512,10 @@ export default function Profile() {
                       </Link>
                       <button
                         type="button"
-                        onClick={() => handleBookMark(item._id)}
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          handleBookMark(item._id);
+                        }}
                         className="flex-1 bg-[#DC2626] hover:bg-[#B91C1C] text-white text-[12px] font-bold py-[7px] px-[12px] rounded-[6px] flex items-center justify-center gap-[4px] cursor-pointer transition-colors"
                       >
                         <IoTrashOutline size={14} />
@@ -501,7 +530,7 @@ export default function Profile() {
 
           {/* Your Listed Properties Section */}
           <div className="flex items-center gap-3 mt-[10px]">
-            <h3 className="text-[#1E40AF] font-bold text-[22px] md:text-[24px]">
+            <h3 className="text-[#1E40AF] font-bold text-[20px] md:text-[24px]">
               Your Listings
             </h3>
             <span className="bg-[#1E40AF] text-white text-[12px] font-bold px-[10px] py-[2px] rounded-full shadow-sm">
@@ -525,7 +554,15 @@ export default function Profile() {
               {userProperties.map((item) => (
                 <div
                   key={item._id}
-                  className="w-full bg-white border border-gray-300 rounded-[12px] overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col sm:flex-row"
+                  onClick={() => openPropertyDetails(item._id)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      openPropertyDetails(item._id);
+                    }
+                  }}
+                  role="link"
+                  tabIndex={0}
+                  className="w-full bg-white border border-gray-300 rounded-[12px] overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col sm:flex-row cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1E40AF]"
                 >
                   <div className="relative w-full sm:w-[220px] h-[160px] sm:h-auto shrink-0 select-none">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -587,6 +624,7 @@ export default function Profile() {
                     <div className="flex gap-3 mt-[18px]">
                       <Link
                         href={`/add-property?edit=${item._id}`}
+                        onClick={(event) => event.stopPropagation()}
                         className="bg-[#1E40AF] hover:bg-[#1a3899] text-white text-[12px] font-bold py-[7px] px-[14px] rounded-[6px] flex items-center justify-center gap-[4px] cursor-pointer transition-colors shadow-sm"
                       >
                         <IoPencil size={14} />
@@ -594,7 +632,10 @@ export default function Profile() {
                       </Link>
                       <button
                         type="button"
-                        onClick={() => handleDelete(item._id)}
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          handleDelete(item._id);
+                        }}
                         className="bg-[#DC2626] hover:bg-[#B91C1C] text-white text-[12px] font-bold py-[7px] px-[14px] rounded-[6px] flex items-center justify-center gap-[4px] cursor-pointer transition-colors shadow-sm"
                       >
                         <IoTrashOutline size={14} />
@@ -610,7 +651,15 @@ export default function Profile() {
               {userProperties.map((item) => (
                 <div
                   key={item._id}
-                  className="bg-white border border-gray-300 rounded-[12px] overflow-hidden shadow-sm flex flex-col justify-between"
+                  onClick={() => openPropertyDetails(item._id)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      openPropertyDetails(item._id);
+                    }
+                  }}
+                  role="link"
+                  tabIndex={0}
+                  className="bg-white border border-gray-300 rounded-[12px] overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1E40AF]"
                 >
                   <div className="relative w-full h-[180px] shrink-0 select-none">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -668,6 +717,7 @@ export default function Profile() {
                     <div className="flex gap-3 mt-[14px]">
                       <Link
                         href={`/add-property?edit=${item._id}`}
+                        onClick={(event) => event.stopPropagation()}
                         className="flex-1 bg-[#1E40AF] hover:bg-[#1a3899] text-white text-[12px] font-bold py-[7px] px-[12px] rounded-[6px] flex items-center justify-center gap-[4px] cursor-pointer transition-colors"
                       >
                         <IoPencil size={14} />
@@ -675,7 +725,10 @@ export default function Profile() {
                       </Link>
                       <button
                         type="button"
-                        onClick={() => handleDelete(item._id)}
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          handleDelete(item._id);
+                        }}
                         className="flex-1 bg-[#DC2626] hover:bg-[#B91C1C] text-white text-[12px] font-bold py-[7px] px-[12px] rounded-[6px] flex items-center justify-center gap-[4px] cursor-pointer transition-colors"
                       >
                         <IoTrashOutline size={14} />
