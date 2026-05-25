@@ -73,6 +73,8 @@ export default function Profile() {
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
   const session = useSession();
+  const userImage =
+    session.data?.user?.image || "/assets/images/profile_avatar.png";
 
   const handleDelete = async (id: string) => {
     setConfirmDeleteId(id);
@@ -203,8 +205,8 @@ export default function Profile() {
             {/* User Avatar */}
             <div className="relative w-[130px] h-[130px] rounded-full overflow-hidden border-2 border-blue-100 shadow-sm shrink-0 select-none">
               <Image
-                src={session.data?.user?.image || "/images/default-avatar.png"}
-                alt="Brad Traversy Profile Picture"
+                src={userImage}
+                alt={session.data?.user?.name || "User profile"}
                 fill
                 className="object-cover"
                 priority

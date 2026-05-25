@@ -32,7 +32,7 @@ export default function FeaturedCards({
 }: IProps) {
   return (
     <div className="mb-[10px] md:w-1/2 w-full z-10">
-      <div className="flex flex-col lg:flex-row border border-gray-300 rounded-[10px] overflow-hidden">
+      <div className="flex flex-col lg:flex-row border border-gray-300 rounded-[10px] overflow-hidden bg-white">
         <div className="relative w-full lg:w-1/2 h-[200px] lg:h-auto min-h-[180px]">
           <Image
             src={`${image}`}
@@ -48,7 +48,9 @@ export default function FeaturedCards({
         <div className="flex-1 p-[15px] flex flex-col justify-between">
           <div>
             <p className="text-gray-500 text-[14px]">{title}</p>
-            <h3 className="text-[15px] font-bold mt-[5px]">{description}</h3>
+            <h3 className="text-[15px] font-bold mt-[5px] text-gray-800">
+              {description}
+            </h3>
 
             <div className="flex items-center justify-between mt-[10px] w-full text-gray-700">
               <span className="flex items-center gap-1 text-[12px]">

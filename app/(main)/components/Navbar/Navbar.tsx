@@ -9,6 +9,9 @@ import Image from "next/image";
 
 export default function Navbar() {
   const session = useSession();
+  const userImage =
+    session.data?.user.image || "/assets/images/profile_avatar.png";
+
   return (
     <header className="fixed left-0 top-0 z-50 w-full bg-[#1E40AF] text-white shadow sm:bg-white sm:text-[#1E40AF]">
       <div className="mx-auto flex h-16 max-w-[1280px] items-center justify-between px-5 md:px-[100px]">
@@ -39,11 +42,11 @@ export default function Navbar() {
           >
             {session.status === "authenticated" ? (
               <Image
-                src={session.data?.user.image || ""}
-                alt={session.data?.user.name || ""}
+                src={userImage}
+                alt={session.data?.user.name || "User profile"}
                 width={30}
                 height={30}
-                className="rounded-full object-cover border border-2 border-gray-700 "
+                className="h-[30px] w-[30px] rounded-full object-cover border-2 border-gray-700 bg-white"
               />
             ) : (
               <CgProfile size={22} />
