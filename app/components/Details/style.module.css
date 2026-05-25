@@ -1,0 +1,23 @@
+.container {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.containerChiled_1 {
+  column-span: 4;
+}
+.containerChiled_2 {
+  column-span: 2;
+}
+@media (max-width: 1015px) {
+  .containerChiled_1 {
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+  }
+  .containerChiled_2 {
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+  }
+}
