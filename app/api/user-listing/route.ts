@@ -65,7 +65,6 @@ export const PATCH = async (req: NextRequest) => {
       message = "added";
     }
 
-    // 4. الغسيل السريع للداتا عشان الـ Client Component ما يضربش Object plain error
     const cleanUser = JSON.parse(JSON.stringify(updatedUser));
 
     return NextResponse.json(
