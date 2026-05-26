@@ -41,6 +41,7 @@ export default function Items() {
     IFeaturedRecentProperty[]
   >([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -54,16 +55,31 @@ export default function Items() {
       ]);
 
       const [featuredData, recentData] = await Promise.all([
-        featuredResponse.json() as Promise<IFeaturedRecentProperty[]>,
-        recentResponse.json() as Promise<IFeaturedRecentProperty[]>,
+        featuredResponse.json() as Promise<unknown>,
+        recentResponse.json() as Promise<unknown>,
       ]);
+
+      if (!featuredResponse.ok || !recentResponse.ok) {
+        throw new Error("Failed to load properties.");
+      }
+
+      if (!Array.isArray(featuredData) || !Array.isArray(recentData)) {
+        throw new Error("Invalid properties response.");
+      }
 
       setFeaturedProperties(featuredData);
       setRecentProperties(recentData);
       setLoading(false);
     };
 
-    void fetchProperties().catch(() => setLoading(false));
+    void fetchProperties().catch((err) => {
+      const message =
+        err instanceof Error ? err.message : "Failed to load properties.";
+      setError(message);
+      setFeaturedProperties([]);
+      setRecentProperties([]);
+      setLoading(false);
+    });
   }, []);
 
   return (
@@ -100,6 +116,10 @@ export default function Items() {
 
           {loading ? (
             <SkeletonLoader />
+          ) : error ? (
+            <div className="rounded-[8px] border border-red-200 bg-red-50 p-4 text-sm font-bold text-red-700">
+              {error}
+            </div>
           ) : (
             <div className="flex flex-col md:flex-row gap-2 justify-center items-center">
               {featuredProperties?.map((property) => (
@@ -128,6 +148,10 @@ export default function Items() {
 
           {loading ? (
             <SkeletonLoader />
+          ) : error ? (
+            <div className="rounded-[8px] border border-red-200 bg-red-50 p-4 text-sm font-bold text-red-700">
+              {error}
+            </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
               {recentProperties?.map((property) => (

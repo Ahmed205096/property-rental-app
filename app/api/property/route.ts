@@ -141,7 +141,10 @@ export const GET = async (req: NextRequest) => {
 
     return NextResponse.json(allProperties, { status: 200 });
   } catch (error) {
-    return NextResponse.json(`There are an error ${error}`, { status: 500 });
+    const message =
+      error instanceof Error ? error.message : "Failed to load properties";
+
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 };
 

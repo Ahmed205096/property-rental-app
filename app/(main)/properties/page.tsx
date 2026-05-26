@@ -25,6 +25,19 @@ interface Property {
   }[];
 }
 
+function getErrorMessage(data: unknown) {
+  if (
+    data &&
+    typeof data === "object" &&
+    "error" in data &&
+    typeof data.error === "string"
+  ) {
+    return data.error;
+  }
+
+  return "Failed to load properties.";
+}
+
 export default function Properties() {
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
@@ -37,11 +50,16 @@ export default function Properties() {
           `${process.env.NEXT_PUBLIC_URL}${process.env.NEXT_PUBLIC_API_GET_ALL_PROPERTIES}`,
         );
 
+        const data = (await response.json()) as unknown;
+
         if (!response.ok) {
-          throw new Error("Failed to load properties.");
+          throw new Error(getErrorMessage(data));
         }
 
-        const data = (await response.json()) as Property[];
+        if (!Array.isArray(data)) {
+          throw new Error("Invalid properties response.");
+        }
+
         setProperties(data);
       } catch (err) {
         const message =
@@ -55,14 +73,15 @@ export default function Properties() {
     fetchProperties();
   }, []);
 
- return (
+  return (
     <div>
       <Hero />
-      
+
       <div className="mx-auto max-w-[1280px] px-5 md:px-[100px] mt-[50px] flex flex-col overflow-x-hidden">
-        
         <div>
-          <p className="mb-[15px] text-[20px] font-bold text-[#1E40AF]">Recent Properties</p>
+          <p className="mb-[15px] text-[20px] font-bold text-[#1E40AF]">
+            Recent Properties
+          </p>
         </div>
 
         {loading && <SkeletonLoader />}
