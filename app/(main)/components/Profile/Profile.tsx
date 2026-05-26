@@ -77,6 +77,9 @@ export default function Profile() {
   const session = useSession();
   const userImage =
     session.data?.user?.image || "/assets/images/profile_avatar.png";
+  const ownedPropertyIds = new Set(
+    userProperties.map((property) => property._id),
+  );
 
   const handleDelete = async (id: string) => {
     setConfirmDeleteId(id);
@@ -155,6 +158,22 @@ export default function Profile() {
     fetchData();
   }, [session.status]);
 
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(min-width: 768px)");
+
+    const syncViewMode = () => {
+      if (!mediaQuery.matches) {
+        setViewMode("list");
+      }
+    };
+
+    syncViewMode();
+    mediaQuery.addEventListener("change", syncViewMode);
+
+    return () => {
+      mediaQuery.removeEventListener("change", syncViewMode);
+    };
+  }, []);
 
   return (
     <div className="mt-[60px] pb-[80px] pt-[40px] px-[16px] sm:px-[20px] md:px-[60px] lg:px-[100px] bg-[#f7f8fc] flex-grow overflow-x-hidden">
@@ -289,7 +308,7 @@ export default function Profile() {
             </div>
 
             {/* View Switchers */}
-            <div className="flex border border-gray-300 rounded-[8px] overflow-hidden shadow-sm shrink-0">
+            <div className="hidden md:flex border border-gray-300 rounded-[8px] overflow-hidden shadow-sm shrink-0">
               <button
                 type="button"
                 onClick={() => setViewMode("list")}
@@ -502,14 +521,16 @@ export default function Profile() {
 
                     {/* Actions Row */}
                     <div className="flex gap-3 mt-[14px]">
-                      <Link
-                        href="/add-property"
-                        onClick={(event) => event.stopPropagation()}
-                        className="flex-1 bg-[#1E40AF] hover:bg-[#1a3899] text-white text-[12px] font-bold py-[7px] px-[12px] rounded-[6px] flex items-center justify-center gap-[4px] cursor-pointer transition-colors"
-                      >
-                        <IoPencil size={14} />
-                        <span>Edit</span>
-                      </Link>
+                      {ownedPropertyIds.has(item._id) && (
+                        <Link
+                          href={`/add-property?edit=${item._id}`}
+                          onClick={(event) => event.stopPropagation()}
+                          className="flex-1 bg-[#1E40AF] hover:bg-[#1a3899] text-white text-[12px] font-bold py-[7px] px-[12px] rounded-[6px] flex items-center justify-center gap-[4px] cursor-pointer transition-colors"
+                        >
+                          <IoPencil size={14} />
+                          <span>Edit</span>
+                        </Link>
+                      )}
                       <button
                         type="button"
                         onClick={(event) => {
