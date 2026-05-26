@@ -97,7 +97,7 @@ export default function LoginPage() {
                 Sign in
               </p>
               <h2 className="mt-3 text-3xl font-bold tracking-normal text-slate-950">
-                Welcome back
+                Welcome!
               </h2>
               <p className="mt-2 text-sm leading-6 text-slate-500">
                 Access your saved rentals, listed properties, and account
