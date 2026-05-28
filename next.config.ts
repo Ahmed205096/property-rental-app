@@ -32,7 +32,6 @@ const nextConfig: NextConfig = {
         pathname: "/**",
       },
       {
-        // رابط Freepik القديم بتاعك
         protocol: "https",
         hostname: "img.freepik.com",
         port: "",
