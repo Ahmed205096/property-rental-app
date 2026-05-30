@@ -1,6 +1,7 @@
 # PropertyPulse
 
 PropertyPulse is a rental property platform built with Next.js. It allows users to browse rentals, search by location or keyword, view property details, authenticate with social providers, save bookmarks, and manage their own property listings.
+Live Demo: [https://khattab-rental-app.vercel.app/]
 
 ## Project Status
 
