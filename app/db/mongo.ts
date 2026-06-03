@@ -14,6 +14,7 @@ const dbConnect = async () => {
     }
 
     await mongoose.connect(mongo_uri, { bufferCommands: false });
+    return true;
   } catch {
     return false;
   }
