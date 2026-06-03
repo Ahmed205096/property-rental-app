@@ -29,6 +29,13 @@ interface IAddPropertyFormFields {
   images: string[];
 }
 
+const getPositiveLimit = (value: string | null) => {
+  if (!value) return null;
+
+  const limit = Number(value);
+  return Number.isInteger(limit) && limit > 0 ? limit : null;
+};
+
 export const POST = async (req: NextRequest) => {
   try {
     const body = (await req.json()) as IAddPropertyFormFields;
@@ -116,22 +123,39 @@ export const POST = async (req: NextRequest) => {
 
 export const GET = async (req: NextRequest) => {
   try {
-    await dbConnect();
+    const isConnected = await dbConnect();
+    if (!isConnected) {
+      return NextResponse.json(
+        { error: "Failed to connect to database" },
+        { status: 503 },
+      );
+    }
+
     const searchParams = req.nextUrl.searchParams;
     const featuredProperties = searchParams.get("featured-properties");
     const recentProperties = searchParams.get("recent-properties");
 
     if (featuredProperties) {
+      const limit = getPositiveLimit(featuredProperties);
+      if (!limit) {
+        return NextResponse.json({ error: "Invalid limit" }, { status: 400 });
+      }
+
       const limitedProperties = await Property.find({})
         .lean()
-        .limit(+featuredProperties);
+        .limit(limit);
 
       return NextResponse.json(limitedProperties, { status: 200 });
     } else if (recentProperties) {
+      const limit = getPositiveLimit(recentProperties);
+      if (!limit) {
+        return NextResponse.json({ error: "Invalid limit" }, { status: 400 });
+      }
+
       const limitedProperties = await Property.find({})
         .lean()
         .sort({ createdAt: -1 })
-        .limit(+recentProperties);
+        .limit(limit);
       return NextResponse.json(limitedProperties, { status: 200 });
     }
 

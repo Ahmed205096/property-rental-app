@@ -5,6 +5,9 @@ import AuthProvider from "./utils/auth/auth-provider";
 export const metadata: Metadata = {
   title: "PropertyPulse",
   description: "Find and manage rental properties",
+  icons: {
+    icon: "/assets/logo.png",
+  },
 };
 
 export default function RootLayout({
